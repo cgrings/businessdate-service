@@ -1,0 +1,37 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: businessdate-v1-0
+  labels:
+    app: businessdate
+    version: v1-0
+    tier: backend
+spec:
+  selector:
+    matchLabels:
+      app: businessdate
+      version: v1-0
+      tier: backend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: businessdate
+        version: v1-0
+        tier: backend
+    spec:
+      containers:
+      - name: businessdate-service
+        image: c.grings/businessdate-service:0.0.1-SNAPSHOT
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: web-port
+          containerPort: 8180
+        resources:
+          requests:
+            cpu: 100m
+            memory: 1Gi
+          limits:
+            cpu: 100m
+            memory: 1Gi

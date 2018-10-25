@@ -1,14 +1,13 @@
-package com.sample.business.service;
+package io.cgrings.businessdate;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDate;
 import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.enterprise.context.ApplicationScoped;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.junit.jupiter.api.Test;
 
 import de.jollyday.Holiday;
 import de.jollyday.HolidayManager;
@@ -18,14 +17,24 @@ import net.objectlab.kit.datecalc.common.DefaultHolidayCalendar;
 import net.objectlab.kit.datecalc.common.HolidayHandlerType;
 import net.objectlab.kit.datecalc.jdk8.LocalDateKitCalculatorsFactory;
 
-@ApplicationScoped
-public class BusinessDateServiceImpl implements BusinessDateService {
+public class WorkdayTest {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(BusinessDateService.class); 
+	@Test
+	public void septemberHolydaysTest() {
+		final CalendarPartManagerParameter managerParameter = new CalendarPartManagerParameter("br", new Properties());
+		final HolidayManager holidayManager = HolidayManager.getInstance(managerParameter);
+		final LocalDate startDateInclusive = LocalDate.of(2018, 9, 1);
+		final LocalDate endDateInclusive = LocalDate.of(2018, 9, 30);
+		final Set<Holiday> holidays = holidayManager.getHolidays(startDateInclusive, endDateInclusive, "rs");
+		assertEquals(2, holidays.size());
 
-	@Override
-	public LocalDate getNextBusinessDate(LocalDate startDateInclusive, Integer daysDuration) {
-		final LocalDate endDateInclusive = startDateInclusive.plusDays(daysDuration * 2);
+	}
+
+	@Test
+	public void septemberWorkdaysTest() {
+		final int days = 10;
+		final LocalDate startDateInclusive = LocalDate.of(2018, 9, 6);
+		final LocalDate endDateInclusive = startDateInclusive.plusDays(days * 2);
 
 		final CalendarPartManagerParameter managerParameter = new CalendarPartManagerParameter("br", new Properties());
 		final HolidayManager holidayManager = HolidayManager.getInstance(managerParameter);
@@ -37,9 +46,10 @@ public class BusinessDateServiceImpl implements BusinessDateService {
 		final DateCalculator<LocalDate> dateCalculator = LocalDateKitCalculatorsFactory.getDefaultInstance()
 				.getDateCalculator("BR", HolidayHandlerType.FORWARD)
 				.setStartDate(startDateInclusive);
-		final LocalDate result = dateCalculator.moveByBusinessDays(daysDuration).getCurrentBusinessDate();
-		LOGGER.info("Business date: '{}'.", result);
-		return result;
+		final LocalDate currentBusinessDate = dateCalculator.moveByBusinessDays(days).getCurrentBusinessDate();
+
+		assertEquals(2, holidays.size());
+		assertEquals(LocalDate.of(2018, 9, 24), currentBusinessDate);
 	}
 
 }

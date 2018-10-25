@@ -1,4 +1,4 @@
-package com.sample.business.controller;
+package io.cgrings.businessdate.controller;
 
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;

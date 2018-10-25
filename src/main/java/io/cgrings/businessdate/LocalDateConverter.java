@@ -1,4 +1,4 @@
-package com.sample.business;
+package io.cgrings.businessdate;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;

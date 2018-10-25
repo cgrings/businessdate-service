@@ -1,4 +1,4 @@
-package com.sample.business.service;
+package io.cgrings.businessdate.service;
 
 import java.time.LocalDate;
 

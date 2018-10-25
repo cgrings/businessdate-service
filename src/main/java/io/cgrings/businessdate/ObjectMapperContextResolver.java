@@ -1,4 +1,4 @@
-package com.sample.business;
+package io.cgrings.businessdate;
 
 import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.Provider;
